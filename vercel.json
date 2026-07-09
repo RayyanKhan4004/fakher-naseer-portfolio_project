@@ -1,0 +1,14 @@
+{
+  "buildCommand": "python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py seed_data",
+  "builds": [
+    {
+      "src": "portfolio_project/wsgi.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb" }
+    }
+  ],
+  "routes": [
+    { "src": "/static/(.*)", "dest": "staticfiles/$1" },
+    { "src": "/(.*)", "dest": "portfolio_project/wsgi.py" }
+  ]
+}
