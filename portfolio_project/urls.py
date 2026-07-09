@@ -12,4 +12,4 @@ urlpatterns = [
 
 # Serve static files through Django on Vercel (no web server available)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += [re_path(r'^static/(?P<path>.*)$', static_serve)]
+urlpatterns += [re_path(r'^static/(?P<path>.*)$', static_serve, {'insecure': True})]
