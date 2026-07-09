@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.views import serve as static_serve
 from bio.views import home
 
 urlpatterns = [
@@ -9,6 +10,6 @@ urlpatterns = [
     path('', home, name='home'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+# Serve static files through Django on Vercel (no web server available)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [re_path(r'^static/(?P<path>.*)$', static_serve)]
