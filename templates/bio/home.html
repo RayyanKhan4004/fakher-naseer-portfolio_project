@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="sprocket sprocket--top" aria-hidden="true"></div>
+
+<nav class="reel-nav" aria-label="Section navigation">
+  <ol>
+    <li><a href="#sec-bio"><span class="tc">00:00</span><span class="label">BIO</span></a></li>
+    <li><a href="#sec-education"><span class="tc">00:01</span><span class="label">EDUCATION</span></a></li>
+    <li><a href="#sec-skills"><span class="tc">00:02</span><span class="label">SKILLS</span></a></li>
+    <li><a href="#sec-experience"><span class="tc">00:03</span><span class="label">EXPERIENCE</span></a></li>
+    <li><a href="#sec-projects"><span class="tc">00:04</span><span class="label">PROJECTS</span></a></li>
+    <li><a href="#sec-contact"><span class="tc">00:05</span><span class="label">CONTACT</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <!-- ============ BIO / HERO ============ -->
+  <section id="sec-bio" class="section hero">
+    <div class="bokeh-field" aria-hidden="true">
+      <span class="bokeh bokeh--1"></span>
+      <span class="bokeh bokeh--2"></span>
+      <span class="bokeh bokeh--3"></span>
+      <span class="bokeh bokeh--4"></span>
+      <span class="bokeh bokeh--5"></span>
+    </div>
+    <div class="hero__frame">
+      {% if bio.profile_picture %}
+        <img class="hero__photo" src="{{ bio.profile_picture.url }}" alt="{{ bio.name }}">
+      {% endif %}
+      <div class="hero__frame-tick hero__frame-tick--tl" aria-hidden="true"></div>
+      <div class="hero__frame-tick hero__frame-tick--br" aria-hidden="true"></div>
+    </div>
+    <div class="hero__copy">
+      <p class="eyebrow">00:00 / NOW ROLLING</p>
+      <h1 class="display">{{ bio.name|default:"Your Name" }}</h1>
+      <p class="hero__role">{{ bio.job_title }}</p>
+      <p class="hero__desc">{{ bio.description }}</p>
+      <div class="hero__actions">
+        {% if bio.work_drive_link %}
+          <a class="btn btn--primary" href="{{ bio.work_drive_link }}" target="_blank" rel="noopener">View Show-reel</a>
+        {% endif %}
+        <a class="btn btn--ghost" href="#sec-contact">Get in Touch</a>
+      </div>
+      <div class="hero__socials">
+        {% if bio.instagram %}<a href="https://instagram.com/{{ bio.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>{% endif %}
+        {% if bio.facebook %}<a href="https://facebook.com/{{ bio.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>{% endif %}
+        {% if bio.github %}<a href="https://github.com/{{ bio.github }}" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>{% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION ============ -->
+  <section id="sec-education" class="section">
+    <header class="section__head">
+      <p class="eyebrow">00:01 / TIMELINE</p>
+      <h2 class="display">Education</h2>
+    </header>
+    <div class="filmstrip">
+      {% for edu in education_list %}
+      <article class="frame-card">
+        <p class="frame-card__tc">{{ edu.duration }}</p>
+        <h3>{{ edu.degree_title }}</h3>
+        {% if edu.institution %}<p class="frame-card__meta">{{ edu.institution }}</p>{% endif %}
+        {% if edu.score %}<p class="frame-card__score">{{ edu.score }}</p>{% endif %}
+      </article>
+      {% empty %}
+      <p class="empty">No education entries added yet — add some from the admin panel.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="sec-skills" class="section section--alt">
+    <header class="section__head">
+      <p class="eyebrow">00:02 / EXPOSURE LEVELS</p>
+      <h2 class="display">Skills &amp; Tools</h2>
+    </header>
+
+    <div class="skills-grid">
+      <div>
+        <h3 class="subhead">Creative Skills</h3>
+        <ul class="meter-list">
+          {% for skill in creative_skills %}
+          <li>
+            <div class="meter-list__top">
+              <span>{{ skill.name }}</span>
+              <span class="stars" aria-label="{{ skill.rating }} out of 5">
+                {% for i in "12345" %}<span class="star {% if forloop.counter <= skill.rating %}star--on{% endif %}">★</span>{% endfor %}
+              </span>
+            </div>
+            <div class="meter"><div class="meter__fill" style="width: {% widthratio skill.rating 5 100 %}%;"></div></div>
+          </li>
+          {% empty %}
+          <p class="empty">No creative skills added yet.</p>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="subhead">Technical Skills</h3>
+        <ul class="meter-list">
+          {% for skill in technical_skills %}
+          <li>
+            <div class="meter-list__top">
+              <span>{{ skill.name }}</span>
+              <span class="stars" aria-label="{{ skill.rating }} out of 5">
+                {% for i in "12345" %}<span class="star {% if forloop.counter <= skill.rating %}star--on{% endif %}">★</span>{% endfor %}
+              </span>
+            </div>
+            <div class="meter"><div class="meter__fill" style="width: {% widthratio skill.rating 5 100 %}%;"></div></div>
+          </li>
+          {% empty %}
+          <p class="empty">No technical skills added yet.</p>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="subhead">Software</h3>
+        <ul class="meter-list">
+          {% for sw in software_list %}
+          <li>
+            <div class="meter-list__top">
+              <span>{{ sw.name }}{% if sw.status_note %} <span class="tag">{{ sw.status_note }}</span>{% endif %}</span>
+              <span class="stars" aria-label="{{ sw.rating }} out of 5">
+                {% for i in "12345" %}<span class="star {% if forloop.counter <= sw.rating %}star--on{% endif %}">★</span>{% endfor %}
+              </span>
+            </div>
+            <div class="meter"><div class="meter__fill" style="width: {% widthratio sw.rating 5 100 %}%;"></div></div>
+          </li>
+          {% empty %}
+          <p class="empty">No software added yet.</p>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="sec-experience" class="section">
+    <header class="section__head">
+      <p class="eyebrow">00:03 / BEHIND THE SCENES</p>
+      <h2 class="display">Work Experience</h2>
+    </header>
+    <div class="filmstrip filmstrip--wide">
+      {% for exp in experience_list %}
+      <article class="frame-card">
+        <p class="frame-card__tc">SCENE {{ forloop.counter|stringformat:"02d" }}</p>
+        <h3>{{ exp.title }}</h3>
+        <p>{{ exp.description }}</p>
+      </article>
+      {% empty %}
+      <p class="empty">No experience entries added yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="sec-projects" class="section section--alt">
+    <header class="section__head">
+      <p class="eyebrow">00:04 / SHOWREEL</p>
+      <h2 class="display">Projects</h2>
+    </header>
+    <div class="projects-grid">
+      {% for project in projects %}
+      <article class="project-card">
+        <div class="project-card__thumb">
+          {% if project.thumbnail %}
+            <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
+          {% else %}
+            <span class="project-card__cat">{{ project.get_category_display }}</span>
+          {% endif %}
+        </div>
+        <div class="project-card__body">
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.description }}</p>
+          {% if project.link %}<a class="link-arrow" href="{{ project.link }}" target="_blank" rel="noopener">Watch / View →</a>{% endif %}
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty">No projects added yet — add some from the admin panel.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="sec-contact" class="section contact">
+    <header class="section__head">
+      <p class="eyebrow">00:05 / END CREDITS</p>
+      <h2 class="display">Let's Work Together</h2>
+    </header>
+    <div class="contact__grid">
+      {% if bio.email %}<a class="contact__item" href="mailto:{{ bio.email }}">✉ {{ bio.email }}</a>{% endif %}
+      {% if bio.phone_primary %}<span class="contact__item">☎ {{ bio.phone_primary }}</span>{% endif %}
+      {% if bio.phone_secondary %}<span class="contact__item">☎ {{ bio.phone_secondary }}</span>{% endif %}
+      {% if bio.facebook %}<a class="contact__item" href="https://facebook.com/{{ bio.facebook }}" target="_blank" rel="noopener">f {{ bio.facebook }}</a>{% endif %}
+      {% if bio.instagram %}<a class="contact__item" href="https://instagram.com/{{ bio.instagram }}" target="_blank" rel="noopener">◎ {{ bio.instagram }}</a>{% endif %}
+      {% if bio.github %}<a class="contact__item" href="https://github.com/{{ bio.github }}" target="_blank" rel="noopener">⌥ {{ bio.github }}</a>{% endif %}
+    </div>
+    <p class="footer-note">&copy; {{ bio.name|default:"Portfolio" }} — Built with Django</p>
+  </section>
+
+</main>
+
+<div class="sprocket sprocket--bottom" aria-hidden="true"></div>
+
+{% endblock %}
